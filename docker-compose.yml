@@ -1,0 +1,27 @@
+version: '4.23'
+services:
+  app:
+    container_name: go-app
+    image: ferbrio/go-app:1.0.0
+    build: .
+    environment:
+      DATABASE_URl: "host=go_db user=ferbrio password=apipostgres dbname=gorm sslmode=disable"
+    ports:
+      - 3000:3000
+    depends_on:
+      - go_db
+  go_db:
+    container_name: ice-cream-dbpsql
+    image: postgres:latest
+    enviroment:
+      postgres_password: apipostgres
+      postgres_user: ferbrio
+      postgres_db: gorm
+
+      ports:
+         -"5432:5432"
+    volumes:
+      - pgdata:/var/llib/postgresql/data
+
+volumes:
+        pgdata: {}
